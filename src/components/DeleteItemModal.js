@@ -1,12 +1,12 @@
-import { Modal as RNmodal, StyleSheet, Text, View } from 'react-native'
+import { Modal, StyleSheet, Text, View } from 'react-native'
 
 import Button from './Button'
 import React from 'react'
 
-const Modal = ({modalVisible, selectedItem, onCancelModal, onDeleteModal}) => {
+const DeleteModal = ({modalVisible, selectedItem, onCancel, onDelete}) => {
     return (
-        <RNmodal animationType="slide" transparent={true} visible={modalVisible}>
-            <View style={styles.modal}>
+        <Modal animationType="slide" transparent={true} visible={modalVisible}>
+            <View style={styles.modalBackground}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalTitle}>
                         <Text style={styles.modalTitleText}>Eliminar item</Text>
@@ -17,21 +17,21 @@ const Modal = ({modalVisible, selectedItem, onCancelModal, onDeleteModal}) => {
                     </View>
                     
                     <View style={styles.modalActions}>
-                        <Button title="Cancelar" styleButton={styles.buttonCancel} onPress={onCancelModal}/>
+                        <Button title="Cancelar" styleButton={styles.buttonCancel} onPress={onCancel}/>
                         <Button title="Eliminar" styleButton={styles.buttonDelete} onPress={()=>{
-                            onDeleteModal(selectedItem?.id)
+                            onDelete(selectedItem?.id)
                         }}/>
                     </View>
                 </View>
             </View>
-        </RNmodal>
+        </Modal>
     )
 }
 
-export default Modal
+export default DeleteModal
 
 const styles = StyleSheet.create({
-    modal:{
+    modalBackground:{
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',

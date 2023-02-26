@@ -1,49 +1,61 @@
-import { Keyboard, StyleSheet, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-import AddItem from './src/components/AddItem';
+import ActionButtons from './src/components/ActionButtons';
+import AddItemModal from './src/components/AddItemModal';
+import DeleteItemModal from './src/components/DeleteItemModal';
 import ItemList from './src/components/ItemList';
-import Modal from './src/components/Modal';
 
 export default function App() {
 
-  const [itemText, setItemText] = useState('');
   const [itemList, setItemList] = useState([]);
 
-  const onChangeText = (text) => {
-    setItemText(text);
+  const clearList = () => {
+    setItemList([]);
   };
   
-  const addItem = (text) => {
-    Keyboard.dismiss();
-    setItemList((oldArry) => [...oldArry, { id: Date.now(), value: itemText }]);
-    setItemText('');
+  const addItem = (text, priority) => {
+    setItemList((oldArry) => [...oldArry, { id: Date.now(), value: text, priority: priority }]);
+    setAddModalVisible(false);
   };
 
-  // MANEJO DEL MODAL
-  const [modalVisible, setModalVisible] = useState(false);
+  // MANEJO DEL MODAL AÑADIR
+  const [addModalVisible, setAddModalVisible] = useState(false);
+
+  const openAddModal = () => {
+    setAddModalVisible(true);
+  };
+
+  const cancelAddModal = () => {
+    setAddModalVisible(false);
+  };
+
+  // MANEJO DEL MODAL ELIMINAR
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const openModal = (item) => {
+  const openDeleteModal = (item) => {
     setSelectedItem(item);
-    setModalVisible(true);
+    setDeleteModalVisible(true);
   };
 
-  const cancelModal = () => {
-    setModalVisible(false);
+  const cancelDeleteModal = () => {
+    setDeleteModalVisible(false);
   };
 
   const onDeleteModal = (id) => {
-    setModalVisible(false);
+    setDeleteModalVisible(false);
     setItemList((oldArry) => oldArry.filter((item) => item.id !== id));
     setSelectedItem(null);
   };
 
   return (
     <View style={styles.container}>
-      <AddItem onChangeText={onChangeText} itemText={itemText} addItem={addItem} />
-      <ItemList list={itemList} openModal={openModal}/>
-      <Modal modalVisible={modalVisible} selectedItem={selectedItem} onCancelModal={cancelModal} onDeleteModal={onDeleteModal}/>
+      <Text style={styles.title}>Lista de tareas</Text>
+      {itemList.length === 0 ? <Text style={styles.info}>No hay tareas</Text> : <ItemList list={itemList} openModal={openDeleteModal}/>}
+      <ActionButtons openAddModal={openAddModal} clearList={clearList}/>
+      <AddItemModal modalVisible={addModalVisible} onCancelModal={cancelAddModal} addItem={addItem}/>
+      <DeleteItemModal modalVisible={deleteModalVisible} selectedItem={selectedItem} onCancel={cancelDeleteModal} onDelete={onDeleteModal}/>
     </View>
   );
 }
@@ -52,5 +64,16 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 50,
     paddingHorizontal: 30,
-  }
+    height: '100%',
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  info: {
+    fontSize: 20,
+    color: '#ccc',
+    textAlign: 'center',
+  },
 });
