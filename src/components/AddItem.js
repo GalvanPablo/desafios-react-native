@@ -1,5 +1,7 @@
-import { Button, StyleSheet, TextInput, View } from 'react-native'
 import React, { useEffect } from 'react'
+import { StyleSheet, TextInput, View } from 'react-native'
+
+import Button from './Button'
 
 const AddItem = ({onChangeText, itemText, addItem}) => {
 
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
         width: '80%',
         borderBottomColor: 'black',
         borderBottomWidth: 1,
-        padding: 10,
+        padding: 5,
     },
     button: {
         width: '20%',

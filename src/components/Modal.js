@@ -1,5 +1,6 @@
-import { Button, Modal as RNmodal, StyleSheet, Text, View } from 'react-native'
+import { Modal as RNmodal, StyleSheet, Text, View } from 'react-native'
 
+import Button from './Button'
 import React from 'react'
 
 const Modal = ({modalVisible, selectedItem, onCancelModal, onDeleteModal}) => {
@@ -16,8 +17,8 @@ const Modal = ({modalVisible, selectedItem, onCancelModal, onDeleteModal}) => {
                     </View>
                     
                     <View style={styles.modalActions}>
-                        <Button title="Cancelar" onPress={onCancelModal}/>
-                        <Button title="Eliminar" onPress={()=>{
+                        <Button title="Cancelar" styleButton={styles.buttonCancel} onPress={onCancelModal}/>
+                        <Button title="Eliminar" styleButton={styles.buttonDelete} onPress={()=>{
                             onDeleteModal(selectedItem?.id)
                         }}/>
                     </View>
@@ -63,5 +64,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%',
+    },
+    buttonCancel:{
+        backgroundColor: '#ccc',
+    },
+    buttonDelete:{
+        backgroundColor: '#f00',
     },
 })

@@ -1,5 +1,5 @@
+import { Keyboard, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 
 import AddItem from './src/components/AddItem';
 import ItemList from './src/components/ItemList';
@@ -15,6 +15,7 @@ export default function App() {
   };
   
   const addItem = (text) => {
+    Keyboard.dismiss();
     setItemList((oldArry) => [...oldArry, { id: Date.now(), value: itemText }]);
     setItemText('');
   };
